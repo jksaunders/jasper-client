@@ -3,41 +3,44 @@ import random
 
 START_TOKEN = "@"
 END_TOKEN = "#"
+FORMAT_TOKEN = "~~"
 
 personalityConfig = {
 	"nice" : "false"
 }
 
 responses = {
+	"username": [
+		'Josh'
+	],
 	"name" : [
-		'Josh',
+		'@{\"dictKey\": \"username\"}#',
 		'master',
 		'sire',
 		'human',
 		'mortal'
 	],
 	"goodMorning" : [
-		#'good morning',
-		'wowowow @{\"dictKey\": \"welcome\"}# to the morning'
-		#'the day has begun'
+		'good morning',
+		'@{\"dictKey\": \"welcome\"}# to the morning',
+		'the day has begun'
 	],
 	"welcome" : [
 		"welcome",
-		"super welcome",
-		"incredible welcome"
+		"a delightful welcome"
 	]
 }
 
 def main():
 	#print(renderString('asd'))
-	print(renderString("@{\"dictKey\": \"goodMorning\"}# @{\"chance\": 50, \"dictKey\": \"name\", \"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#"))
+	print(renderString("@{\"dictKey\": \"goodMorning\"}#@{\"chance\": 50, \"dictKey\": \"name\", \"format\": \", ~~\", \"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#."))
 
 def renderString(s):
 	#format: Textextext {[{"chance" : chance, "dictKey" : choice1, "conditions" : [condition1, condition2]},{"chance" : chance, "dictKey" : choice1, "conditions" : [condition1, condition2]}]}
 	#example: Good morning {{"chance":50,"dictKey":"name","conditions":[condition1]}}.
 		#condition format: {"key" : "nice", "value" : "false", "type" : "and/not"}
 
-	#print("\nconsidering:" + s)
+	#print("\nconsidering:\"" + s + "\"")
 	
 	rendered = ''
 
@@ -46,11 +49,16 @@ def renderString(s):
 	# then add the rendered string inside the tokens to the rendered string,
 	# then chance the last index to the index of the end token so that the rest of the string is considered
 	# it keeps the recursion working properly, doing the recursion depth first
-	for indices in getStartEnds(s):
+	allIndices = getStartEnds(s)
+	for indices in allIndices:
 		#print(indices)
 		rendered = rendered + s[lastIndex:indices[0]]
 		rendered = rendered + renderString(s[indices[0]+1:indices[1]])
 		lastIndex = indices[1]+1
+
+	if lastIndex < s.__len__() and allIndices.__len__()>0:
+		#print(rendered + ' still has some stuff left to process at ' + (str)(lastIndex))
+		rendered = rendered + renderString(s[lastIndex:])
 
 	# found base case
 	if rendered == '':
@@ -105,6 +113,10 @@ def renderString(s):
 						rendered = s
 					else:
 						rendered = renderString(getRandomEntry(responses[option['dictKey']]))
+						if option.get('format') != None:
+							format = option.get('format')
+							formatTokenIndex = format.index(FORMAT_TOKEN)
+							rendered = format[0:formatTokenIndex] + rendered + format[formatTokenIndex+FORMAT_TOKEN.__len__():]
 					break
 				else:
 					lastChance = chance
