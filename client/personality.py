@@ -115,8 +115,12 @@ def renderString(s):
 						rendered = renderString(getRandomEntry(responses[option['dictKey']]))
 						if option.get('format') != None:
 							format = option.get('format')
-							formatTokenIndex = format.index(FORMAT_TOKEN)
-							rendered = format[0:formatTokenIndex] + rendered + format[formatTokenIndex+FORMAT_TOKEN.__len__():]
+							try:
+								formatTokenIndex = format.index(FORMAT_TOKEN)
+								rendered = format[0:formatTokenIndex] + rendered + format[formatTokenIndex+FORMAT_TOKEN.__len__():]
+							except ValueError:
+								# do nothing more
+								rendered = rendered
 					break
 				else:
 					lastChance = chance
