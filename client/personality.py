@@ -1,41 +1,35 @@
 import json
 import random
 
+SAVE_FILE = 'personalityConfig.txt'
 START_TOKEN = "@"
 END_TOKEN = "#"
 FORMAT_TOKEN = "~~"
 
-personalityConfig = {
-	"nice" : "false"
-}
-
-responses = {
-	"username": [
-		'Josh'
-	],
-	"name" : [
-		'@{\"dictKey\": \"username\"}#',
-		'master',
-		'sire',
-		'human',
-		'mortal'
-	],
-	"goodMorning" : [
-		'good morning',
-		'@{\"dictKey\": \"welcome\"}# to the morning',
-		'the day has begun'
-	],
-	"welcome" : [
-		"welcome",
-		"a delightful welcome"
-	]
-}
+personalityConfig = {}
+responses = {}
 
 def main():
-	#print(renderString('asd'))
+	loadJSON = readConfigAndResponsesFromFile(SAVE_FILE)
+	global personalityConfig
+	global responses
+	personalityConfig = loadJSON['personalityConfig']
+	responses = loadJSON['responses']
+
 	print(renderString("@{\"dictKey\": \"goodMorning\"}#@{\"chance\": 50, \"dictKey\": \"name\", \"format\": \", ~~\", \"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#."))
 
+def readConfigAndResponsesFromFile(filePath):
+	with open(filePath, 'r') as content_file:
+		content = content_file.read()
+		content = json.loads(content)
+		return content
+
 def renderString(s):
+
+	# check to see if there are any responses first
+	if responses == {}:
+		return "I can't seem to find my personalityConfig.txt file. Either that or it's empty, which also isn't good, because then I have nothing to say. It should be in the same folder as my personality.py file."
+
 	#format: Textextext {[{"chance" : chance, "dictKey" : choice1, "conditions" : [condition1, condition2]},{"chance" : chance, "dictKey" : choice1, "conditions" : [condition1, condition2]}]}
 	#example: Good morning {{"chance":50,"dictKey":"name","conditions":[condition1]}}.
 		#condition format: {"key" : "nice", "value" : "false", "type" : "and/not"}
@@ -90,9 +84,10 @@ def renderString(s):
 						break
 			else:
 				valid = True
+
 			if valid:
 				optionIndex += 1
-			if valid == False:
+			else:
 				# remove any invalid options
 				options.__delitem__(optionIndex)
 

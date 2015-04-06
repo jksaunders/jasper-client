@@ -1,0 +1,26 @@
+{
+    "personalityConfig": {
+        "nice": "false"
+    },
+    "responses": {
+        "username": [
+            "Josh"
+        ],
+        "name": [
+            "@{\"dictKey\": \"username\"}#",
+            "master",
+            "sire",
+            "human",
+            "mortal"
+        ],
+        "goodMorning": [
+            "good morning",
+            "@{\"dictKey\": \"welcome\"}# to the morning",
+            "the day has begun"
+        ],
+        "welcome": [
+            "welcome",
+            "a delightful welcome"
+        ]
+    }
+}
