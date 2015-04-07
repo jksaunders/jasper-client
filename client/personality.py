@@ -16,7 +16,14 @@ def main():
 	personalityConfig = loadJSON['personalityConfig']
 	responses = loadJSON['responses']
 
-	print(renderString("@{\"dictKey\": \"goodMorning\"}#@{\"chance\": 50, \"dictKey\": \"name\", \"format\": \", ~~\", \"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#."))
+	inLineDict = {
+		'thisisatest' : [
+			"this is definitely a test",
+			"this is most certainly a test"
+		]
+	}
+
+	print(renderString("@{\"dictKey\": \"thisisatest\"}#@{\"chance\": 50, \"dictKey\": \"name\", \"format\": \", ~~\", \"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#.",inLineDict))
 
 def readConfigAndResponsesFromFile(filePath):
 	with open(filePath, 'r') as content_file:
@@ -24,11 +31,17 @@ def readConfigAndResponsesFromFile(filePath):
 		content = json.loads(content)
 		return content
 
-def renderString(s):
+def renderString(s,inputDict={}):
+
+	global responses
 
 	# check to see if there are any responses first
-	if responses == {}:
+	if responses == None or responses == {}:
 		return "I can't seem to find my personalityConfig.txt file. Either that or it's empty, which also isn't good, because then I have nothing to say. It should be in the same folder as my personality.py file."
+
+	# if there is an inputDict, add it to the responses dictionary
+	if inputDict != {}:
+		responses.update(inputDict)
 
 	#format: Textextext {[{"chance" : chance, "dictKey" : choice1, "conditions" : [condition1, condition2]},{"chance" : chance, "dictKey" : choice1, "conditions" : [condition1, condition2]}]}
 	#example: Good morning {{"chance":50,"dictKey":"name","conditions":[condition1]}}.
