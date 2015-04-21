@@ -9,7 +9,7 @@ import audioop
 import pyaudio
 import alteration
 import jasperpath
-
+import personality
 
 class Mic:
 
@@ -258,5 +258,6 @@ class Mic:
     def say(self, phrase,
             OPTIONS=" -vdefault+m3 -p 40 -s 160 --stdout > say.wav"):
         # alter phrase before speaking
+	phrase = personality.renderString(phrase)
         phrase = alteration.clean(phrase)
         self.speaker.say(phrase)

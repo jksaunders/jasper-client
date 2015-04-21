@@ -4,7 +4,7 @@ A drop-in replacement for the Mic class that allows for all I/O to occur
 over the terminal. Useful for debugging. Unlike with the typical Mic
 implementation, Jasper is always active listening with local_mic.
 """
-
+import personality
 
 class Mic:
     prev = None
@@ -29,4 +29,4 @@ class Mic:
         return input
 
     def say(self, phrase, OPTIONS=None):
-        print("JASPER: %s" % phrase)
+        print("JASPER: %s" % personality.renderString(phrase))
