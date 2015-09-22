@@ -16,14 +16,17 @@ def main():
 	personalityConfig = loadJSON['personalityConfig']
 	responses = loadJSON['responses']
 
-	inLineDict = {
-		'thisisatest' : [
-			"this is definitely a test",
-			"this is most certainly a test"
-		]
-	}
+	# inLineDict = {
+	# 	'thisisatest' : [
+	# 		"this is definitely a test",
+	# 		"this is most certainly a test"
+	# 	]
+	# }
 
-	print(renderString("@{\"dictKey\": \"thisisatest\"}#@{\"chance\": 50, \"dictKey\": \"name\", \"format\": \", ~~\", \"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#.",inLineDict))
+	# print(renderString("@{\"dictKey\": \"thisisatest\"}#@{\"chance\": 90, \"dictKey\": \"name\", \"format\": \", ~~\", \"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#.",inLineDict))
+
+	print(renderString("@{\"dictKey\": \"tutorialStrings\"}#"))
+
 
 def readConfigAndResponsesFromFile(filePath):
 	with open(filePath, 'r') as content_file:

@@ -3,6 +3,17 @@
         "nice": "false"
     },
     "responses": {
+        "tutorialStrings" : [
+                "This is an example of all the fun things you could do with personality.py: @{\"dictKey\": \"thisisatest\"}#@{\"chance\": 55, \"dictKey\": \"name\", \"format\": \", ~~\", \"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#.",
+                "Most will have just dictKeys,",
+                "But you can also make use of chance, conditions and formatting.",
+                "For chance, add \"chance\":## out of 100",
+                "For formatting, add \"format\": followed by a string where ~~ will be replaced with the rendered String",
+                "For example, \"~~!!\" could be used to put exclamation points beside a name, but only if this node is rendered, which becomes an issue if using chance.",
+                "Lastly, we can set key-value entries to the personalityConfig map and check those like this:",
+                "\"conditions\": [{\"key\": \"nice\", \"type\": \"and\",\"value\": \"false\"}]}#",
+                "The key is the key, the type can be either \"and\" or \"not\", and the value is the desired (or undesired) value."
+        ],
         "username": [
             "Josh"
         ],
@@ -21,6 +32,10 @@
         "welcome": [
             "welcome",
             "a delightful welcome"
+        ],
+        "thisisatest" : [
+            "this is definitely a test",
+            "this is most certainly a test"
         ]
     }
 }
